@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "reporteao"
+version = "0.1.0"
+description = "Plataforma para reportar problemáticas en la Escuela de Artes y Oficios"
+authors = ["Lux Aliaga <lux.aliaga@usach.cl>", "Juan José Campos <juan.campos.a@usach.cl>", "Benjamín Maldonado <benjamin.maldonado.m@usach.cl>", "Mabel García <mabel.garcia.a@usach.cl>", "Francisca Solís <francisca.solis.p@usach.cl>"]
+license = "AGPL-3.0-or-later"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+flask = "^3.1.0"
+huey = "^2.5.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
