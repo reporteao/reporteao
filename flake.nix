@@ -17,6 +17,7 @@
             (python311.withPackages (python-pkgs: with python-pkgs; [
               flask
               huey
+              pytest
             ]))
           ];
         };
