@@ -15,10 +15,13 @@
           nativeBuildInputs = with pkgs; [
             poetry
             (python311.withPackages (python-pkgs: with python-pkgs; [
+              argon2-cffi
               flask
               huey
+              jinja2
               pytest
             ]))
+            sqlite
           ];
         };
       }
