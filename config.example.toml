@@ -1,0 +1,5 @@
+[email]
+host = "example.net"
+puerto = 465
+direccion = "noreply@example.net"
+clave = "PLACEHOLDER"
