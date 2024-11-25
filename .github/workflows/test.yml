@@ -1,0 +1,29 @@
+name: 'default'
+on:
+  push:
+    branches:
+      - '*'
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Instalar poetry
+        uses: abatilo/actions-poetry@v2
+      - name: Configurar entorno loocal
+        run: |
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
+      - uses: actions/cache@v3
+        name: Definir cache en base a entorno local
+        with:
+          path: ./.venv
+          key: venv-${{ hashFiles('poetry.lock') }}
+      - name: Instalar dependencias
+        run: poetry install
+      - name: Ejecutar pruebas automatizadas
+        run: poetry run pytest -v
