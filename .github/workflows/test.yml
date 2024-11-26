@@ -14,7 +14,7 @@ jobs:
           python-version: '3.11'
       - name: Instalar poetry
         uses: abatilo/actions-poetry@v2
-      - name: Configurar entorno loocal
+      - name: Configurar entorno local
         run: |
           poetry config virtualenvs.create true --local
           poetry config virtualenvs.in-project true --local
@@ -25,5 +25,7 @@ jobs:
           key: venv-${{ hashFiles('poetry.lock') }}
       - name: Instalar dependencias
         run: poetry install
+      - name: Copiar configuración de ejemplo
+        run: cp ./config.example.toml ./config.toml
       - name: Ejecutar pruebas automatizadas
         run: poetry run pytest -v
