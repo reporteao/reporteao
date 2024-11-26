@@ -1,5 +1,9 @@
+[base]
+database = 'database.db'
+debug = true
+
 [email]
 host = "example.net"
-puerto = 465
-direccion = "noreply@example.net"
-clave = "PLACEHOLDER"
+port = 465
+address = "noreply@example.net"
+password = "PLACEHOLDER"

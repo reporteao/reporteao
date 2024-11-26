@@ -20,11 +20,14 @@ def login():
 @bp.route('/register', methods = ['POST', 'GET'])
 def registrar():
     if request.method == 'POST':
+        # Se consiguen los datos desde el formulario
         nombre = str(request.form['nombre'])
         email = str(request.form['email']) + '@usach.cl'
         clave = ph.hash(str(request.form['clave']))
+
+        # Se crea el usuario
         db.crear_usuario(nombre, email, clave, -1)
-        
+        # TODO(otoayana): Generar correo de verificación
         enviar_correo(email, "PLACEHOLDER", conf)
         return "Cuenta creada exitosamente"
     else:

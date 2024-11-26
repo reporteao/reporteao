@@ -1,8 +1,9 @@
 from flask import Flask
 from .routes import bp
-from .db import init
+from . import db, config
 
-init()
+# Inicializa la base de datos
+db.init()
 
 app = Flask(__name__)
 
