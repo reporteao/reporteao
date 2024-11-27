@@ -49,3 +49,9 @@ Finalmente, ejecute el servidor web y la cola con los siguientes comandos.
 $ flask --app reporteao run &
 $ huey_consumer.py reporteao.email.cola
 ```
+
+## Licencia
+
+ReportEAO está licenciado bajo la GNU Afferro General Public License,
+version 3 or later. Refiérase a [la licencia](LICENSE) para más
+detalles.
