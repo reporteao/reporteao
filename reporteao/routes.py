@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, session
 from argon2 import PasswordHasher
 from jinja2 import Environment, PackageLoader, select_autoescape
 from .email import enviar_correo
@@ -18,8 +18,33 @@ def inicio():
     # TODO(NecroBestia): Agregar vista principal
     return reportes
 
-@bp.route('/login')
+@bp.route('/login', methods = ['POST', 'GET'])
 def login():
+    if request.method == 'POST':
+        # NOTA: Al hacer el formulario, este campo debería señalar de que el @usach.cl ya está presente.
+        email = str(request.form['email']) + '@usach.cl'
+
+        # Se busca el usuario en la base de datos
+        usuario = db.conseguir_usuario(email)
+
+        # Se verifica si existe el usuario
+        if not usuario:
+            return "Usuario no existe"
+
+        # Se verifica si el usuario ya fue verificado o no
+        if usuario[3] < 0:
+            return "Usuario no está habilitado para iniciar sesión"
+            
+        # Se verifica si la contraseña es válida
+        try:
+            ph.verify(usuario[2], str(request.form['clave']))
+        except argon2.exceptions.VerifyMismatchError:
+            return "Contraseña inválida"
+        
+        # Se inicia sesión
+        session['usuario'] = email
+        return "Sesión iniciada"
+    # TODO(NecroBestia): Formulario de login
     return "TODO"
 
 @bp.route('/register', methods = ['POST', 'GET'])
