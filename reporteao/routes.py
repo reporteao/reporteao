@@ -39,8 +39,8 @@ def registrar():
 
         # Se envía el código de verificación por email al usuario
         plantilla = templateEnv.get_template('email/verificacion.txt')
-        correo = plantilla.render(uri=config['web']['uri'], codigo=codigo)
-        enviar_correo(email, correo, conf)
+        correo = plantilla.render(uri=conf['web']['uri'], codigo=codigo)
+        enviar_correo(email, correo)
 
         return "Se ha enviado un enlace de verificación a su correo institucional. Haga click en él para terminar de crear su cuenta."
     else:

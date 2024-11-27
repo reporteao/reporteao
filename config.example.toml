@@ -1,5 +1,6 @@
 [base]
 database = 'database.db'
+queue = 'queue.db'
 debug = true
 
 [web]
