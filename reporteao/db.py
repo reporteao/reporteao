@@ -82,6 +82,10 @@ def eliminar_usuario(email):
         cursor.execute("DELETE FROM reportes WHERE email = ?", (email,))
         db.commit()
 
+# Crea un código de verificación. El tipo de código se define como un
+# entero equivalente a los siguientes valores:
+# - 0: Código de verificación de cuenta
+# - 1: Código de reestablecimiento de clave
 def crear_codigo(email, codigo, tipo):
     with sqlite3.connect(archivo) as db:
         cursor = db.cursor()

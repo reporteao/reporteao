@@ -1,0 +1,15 @@
+Estimadx,
+
+Usted está recibiendo este correo debido a que se ha enviado una
+solicitud de registro para una cuenta en ReportEAO. Si usted ha
+realizado esta solicitud, verifique su cuenta mediante el siguiente
+enlace.
+
+	{{uri}}/verify/{{codigo}}
+
+Este enlace expira en 30 minutos. Si usted no ha creado una cuenta,
+simplemente ignore este mensaje.
+
+Saludos cordiales.
+
+- El equipo de ReportEAO

@@ -2,6 +2,9 @@
 database = 'database.db'
 debug = true
 
+[web]
+uri = 'https://reporteao.net'
+
 [email]
 host = "example.net"
 port = 465

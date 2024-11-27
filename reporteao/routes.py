@@ -1,8 +1,13 @@
 from flask import Blueprint, request
 from argon2 import PasswordHasher
+from jinja2 import Environment, PackageLoader, select_autoescape
 from .email import enviar_correo
-from . import db, config
+from . import db, config, util
 
+templateEnv = Environment(
+    loader=PackageLoader('reporteao', '../templates'),
+    autoescape=select_autoescape()
+)
 bp = Blueprint("routes", __name__)
 conf = config.cargar_configuracion('config.toml')
 ph = PasswordHasher()
@@ -27,9 +32,17 @@ def registrar():
 
         # Se crea el usuario
         db.crear_usuario(nombre, email, clave, -1)
-        # TODO(otoayana): Generar correo de verificación
-        enviar_correo(email, "PLACEHOLDER", conf)
-        return "Cuenta creada exitosamente"
+
+        # Se crea el código de verificación
+        codigo = util.uuid()
+        db.crear_codigo(email, codigo, 0)
+
+        # Se envía el código de verificación por email al usuario
+        plantilla = templateEnv.get_template('email/verificacion.txt')
+        correo = plantilla.render(uri=config['web']['uri'], codigo=codigo)
+        enviar_correo(email, correo, conf)
+
+        return "Se ha enviado un enlace de verificación a su correo institucional. Haga click en él para terminar de crear su cuenta."
     else:
         # TODO(NecroBestia): Agregar formulario de registro
         return "TODO"
