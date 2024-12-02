@@ -18,6 +18,10 @@ def inicio():
     # TODO(NecroBestia): Agregar vista principal
     return reportes
 
+# Requiere un método POST con los siguientes parámetros:
+# - 'email': Correo del usuario, sin @usach.cl. Ejemplo: john.doe
+# - 'clave': Contraseña del usuario
+# En caso de no ser una solicitud POST, debe retornar el formulario de login
 @bp.route('/login', methods = ['POST', 'GET'])
 def login():
     if request.method == 'POST':
@@ -43,17 +47,29 @@ def login():
         
         # Se inicia sesión
         session['usuario'] = email
+        # TODO: Redireccionar a la página principal
         return "Sesión iniciada"
     # TODO(NecroBestia): Formulario de login
     return "TODO"
 
+# Requiere un método POST con los siguientes parámetros:
+# - 'nombre': Nombre real de lx usuarix. Ejemplo: John Doe
+# - 'email': Correo de lx usuarix, sin @usach.cl. Ejemplo: john.doe
+# - 'clave': Contraseña de lx usuarix
+# - 'clave2': Contraseña de lx usuarix, repetida
+# En caso de no ser una solicitud POST, debe retornar el formulario de registro
 @bp.route('/register', methods = ['POST', 'GET'])
 def registrar():
     if request.method == 'POST':
         # Se consiguen los datos desde el formulario
         nombre = str(request.form['nombre'])
+        # TODO(otoayana): Validar si el correo está bien escrito
         email = str(request.form['email']) + '@usach.cl'
         clave = ph.hash(str(request.form['clave']))
+
+        # Se invalida la solicitud si las contraseñas no son iguales
+        if request.form['clave'] != request.form['clave2']:
+            return "Contraseñas no coinciden"
 
         # Se crea el usuario
         db.crear_usuario(nombre, email, clave, -1)
