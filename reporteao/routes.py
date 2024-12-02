@@ -92,17 +92,34 @@ def registrar():
 def agregar_reporte():
     return "TODO"
 
-@bp.route('/like')
-def apoyar_reporte():
-    return "TODO"
+@bp.route('/like/<id>')
+def apoyar_reporte(id):
+    if session.has_key('usuario'):
+        db.crear_apoyo(session['usuario'], id)
+    else:
+        return "Sesión no iniciada"
 
-@bp.route('/solve')
-def resolver_reporte():
-    return "TODO"
+@bp.route('/solve/<id>')
+def resolver_reporte(id):
+    if session.has_key('usuario'):
+        usuario = db.conseguir_usuario(session['usuario'])
+        if usuario[3] > 1:
+            db.actualizar_reporte(id, 1)
+        else:
+            return "No estás autorizadx para realizar esta operación"
+    else:
+        return "Sesión no iniciada"
 
-@bp.route('/delete')
-def eliminar_reporte():
-    return "TODO"
+@bp.route('/delete/<id>')
+def eliminar_reporte(id):
+    if session.has_key('usuario'):
+        usuario = db.conseguir_usuario(session['usuario'])
+        if usuario[3] > 2:
+            db.eliminar_reporte(id)
+        else:
+            return "No estás autorizadx para realizar esta operación"
+    else:
+        return "Sesión no iniciada"
 
 @bp.route('/verify')
 def verificar():
