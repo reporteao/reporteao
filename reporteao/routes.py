@@ -134,6 +134,18 @@ def eliminar_reporte(id):
     else:
         return "Sesión no iniciada"
 
-@bp.route('/verify')
-def verificar():
-    return "TODO"
+@bp.route('/verify/<id>')
+def verificar(id):
+    codigo = db.conseguir_codigo(id)
+
+    if not codigo:
+        return "Código no encontrado"
+    
+    if codigo[2] == 0:
+        usuario = db.actualizar_nivel(codigo[0], 0)
+        return "Usuario activado"
+    
+    if codigo[2] == 1:
+        # TODO(otoayana): Agregar sistema de reestablecimiento de claves
+        return "TODO"
+
