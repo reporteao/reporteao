@@ -95,7 +95,17 @@ def agregar_reporte():
 @bp.route('/like/<id>')
 def apoyar_reporte(id):
     if session.has_key('usuario'):
-        db.crear_apoyo(session['usuario'], id)
+        apoyos = conseguir_apoyos(id)
+        existe = False
+        i = 0
+        while i < len(apoyos) or not existe:
+            if apoyos[i][0] == session['usuario']:
+                existe = True
+                
+        if not existe:
+            db.crear_apoyo(session['usuario'], id)
+        else:
+            db.eliminar_apoyo(session['usuario'], id)
     else:
         return "Sesión no iniciada"
 
@@ -114,7 +124,10 @@ def resolver_reporte(id):
 def eliminar_reporte(id):
     if session.has_key('usuario'):
         usuario = db.conseguir_usuario(session['usuario'])
-        if usuario[3] > 2:
+        reporte = db.conseguir_reporte(id)
+        
+        # Eliminar el reporte si lx usuarix es dueñx
+        if usuario[3] > 2 or reporte[1] == usuario[0]:
             db.eliminar_reporte(id)
         else:
             return "No estás autorizadx para realizar esta operación"

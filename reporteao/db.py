@@ -122,5 +122,5 @@ def conseguir_apoyos(id):
 def eliminar_apoyo(email, id):
     with sqlite3.connect(archivo) as db:
         cursor = db.cursor()
-        cursor.execute("DELETE FROM apoyos WHERE reporte = ?", (id,))
+        cursor.execute("DELETE FROM apoyos WHERE reporte = ? AND email = ?", (id, email))
         db.commit()
