@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session
+from flask import Blueprint, request, session, render_template
 from argon2 import PasswordHasher
 from jinja2 import Environment, PackageLoader, select_autoescape
 from .email import enviar_correo
@@ -16,7 +16,8 @@ ph = PasswordHasher()
 def inicio():
     reportes = db.listar_reportes(1)
     # TODO(NecroBestia): Agregar vista principal
-    return reportes
+    return render_template('templates/index.html', reportes=reportes)
+
 
 # Requiere un método POST con los siguientes parámetros:
 # - 'email': Correo del usuario, sin @usach.cl. Ejemplo: john.doe
@@ -50,7 +51,7 @@ def login():
         # TODO: Redireccionar a la página principal
         return "Sesión iniciada"
     # TODO(NecroBestia): Formulario de login
-    return "TODO"
+    return render_template('templates/LogIn.html')
 
 # Requiere un método POST con los siguientes parámetros:
 # - 'nombre': Nombre real de lx usuarix. Ejemplo: John Doe
@@ -86,7 +87,7 @@ def registrar():
         return "Se ha enviado un enlace de verificación a su correo institucional. Haga click en él para terminar de crear su cuenta."
     else:
         # TODO(NecroBestia): Agregar formulario de registro
-        return "TODO"
+        return render_template('templates/SingUp.html')
 
 @bp.route('/add')
 def agregar_reporte():

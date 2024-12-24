@@ -1,0 +1,166 @@
+/* Reset básico */
+body,
+h1,
+h2,
+p,
+ul,
+li,
+footer,
+header,
+nav,
+section,
+aside,
+article,
+blockquote {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Contenedor principal */
+.agrupar {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.header {
+    text-align: center;
+    padding: 10px;
+    background: #0073e6;
+    color: #fff;
+}
+
+.header h1 {
+    font-size: 2em;
+}
+
+/* Menú de navegación */
+.menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: #333;
+    display: flex;
+    /* Cambiamos a flexbox para distribuir los elementos */
+    justify-content: space-around;
+    /* Asegura que los elementos se distribuyan uniformemente */
+    width: 100%;
+    /* Ocupa todo el ancho del contenedor */
+}
+
+.menu {
+    text-align: center;
+    /* Asegura que el contenedor centralice el contenido */
+}
+
+.menu ul li {
+    display: inline-block;
+    position: relative;
+}
+
+.menu ul li a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    background: #333;
+    transition: 0.3s;
+}
+
+.menu ul li a:hover {
+    background: #0073e6;
+}
+
+.menu ul li ul {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background: #444;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.menu ul li:hover>ul {
+    display: block;
+}
+
+.menu ul li ul li {
+    display: block;
+}
+
+.menu ul li ul li a {
+    padding: 10px;
+    color: white;
+    background: #444;
+    transition: 0.3s;
+}
+
+.menu ul li ul li a:hover {
+    background: #555;
+}
+/* Asegurar que el menú no se colapse */
+.menu ul li ul {
+    min-width: 150px;
+}
+
+
+
+
+
+
+
+.section {
+	margin-top: 20px;
+}
+
+.section article {
+	margin-bottom: 20px;
+	padding: 15px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	background-color: #f9f9f9;
+}
+
+.article time {
+	font-size: 0.9em;
+	color: #888;
+}
+
+.article h1,
+.article h2 {
+	text-align: center;
+	margin: 0 0 10px 0;
+	line-height: 1.2;
+}
+
+.article p {
+	margin: 10px 0;
+	line-height: 1.8;
+}
+
+.article footer {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+}
+
+.article footer p {
+	margin: 0;
+	display: inline-flex;
+}

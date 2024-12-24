@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="{{ url_for('templates', filename='css/LogIn-SingUp.css') }}">
+
+{%include 'menu.html'%}
+
+<div class="agrupar">
+    <header class="header">
+        <h1>Crear Cuenta</h1>
+    </header>
+
+    <section class="section">
+        <form action="/signup" method="POST">
+            <label for="nombre">Nombre Completo:</label>
+            <input type="text" id="nombre" name="nombre" placeholder="" required>
+
+            <label for="email">Correo Electrónico (sin @usach.cl):</label>
+            <input type="text" id="email" name="email" placeholder="@usach.cl" required>
+
+            <label for="clave">Contraseña:</label>
+            <input type="password" id="clave" name="clave" placeholder="Contraseña" required>
+
+            <label for="clave2">Repetir Contraseña:</label>
+            <input type="password" id="clave2" name="clave2" placeholder="Repite tu Contraseña" required>
+
+            <button type="submit">Crear Cuenta</button>
+        </form>
+    </section>
+
+    <footer class="pie">
+        <p>¿Ya tienes cuenta? <a href="{{url_for('/login')}}">Inicia Sesión aquí</a>.</p>
+    </footer>
+</div>
