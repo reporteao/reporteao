@@ -1,13 +1,14 @@
 [base]
 database = 'database.db'
 queue = 'queue.db'
-debug = true
+secret = 'PLACEHOLDER'
 
 [web]
 uri = 'https://reporteao.net'
 
 [email]
-host = "example.net"
+host = 'example.net'
 port = 465
-address = "noreply@example.net"
-password = "PLACEHOLDER"
+address = 'noreply@example.net'
+username = 'noreply'
+password = 'PLACEHOLDER'

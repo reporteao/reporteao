@@ -5,6 +5,11 @@ from . import db, config
 # Inicializa la base de datos
 db.init()
 
-app = Flask(__name__)
+# Carga la llave secreta
+conf = config.cargar_configuracion('config.toml')
+secreto = conf['base']['secret']
 
+# Configura la app
+app = Flask(__name__)
+app.secret_key = secreto
 app.register_blueprint(bp)

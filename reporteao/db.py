@@ -13,8 +13,9 @@ archivo = conf['base']['database']
 def init():
     with sqlite3.connect(archivo) as db:
         cursor = db.cursor()
-        cursor.execute("CREATE TABLE IF NOT EXISTS reportes(autor, titulo, facultad, descripcion, imagenes, fecha, likes, estado)")
-        cursor.execute("CREATE TABLE IF NOT EXISTS usuarios(nombre, email, clave, nivel)")
+        cursor.execute("CREATE TABLE IF NOT EXISTS reportes(id integer primary key autoincrement, autor, titulo, facultad, descripcion, imagenes, fecha, likes, estado)")
+        cursor.execute("CREATE TABLE IF NOT EXISTS apoyos(email, reporte)")
+        cursor.execute("CREATE TABLE IF NOT EXISTS usuarios(email, nombre, clave, nivel)")
         cursor.execute("CREATE TABLE IF NOT EXISTS codigos(email, codigo, tipo)")
         db.commit()
 
@@ -89,7 +90,7 @@ def eliminar_usuario(email):
 def crear_codigo(email, codigo, tipo):
     with sqlite3.connect(archivo) as db:
         cursor = db.cursor()
-        res = cursor.execute("INSERT INTO codigos VALUES (?, ?, ?)", (email, codigo, tipo))
+        cursor.execute("INSERT INTO codigos VALUES (?, ?, ?)", (email, codigo, tipo))
         db.commit()
 
 def conseguir_codigo(codigo):
@@ -102,5 +103,24 @@ def conseguir_codigo(codigo):
 def eliminar_codigo(codigo):
     with sqlite3.connect(archivo) as db:
         cursor = db.cursor()
-        res = cursor.execute("DELETE FROM codigos WHERE codigo = ?", (codigo,))
+        cursor.execute("DELETE FROM codigos WHERE codigo = ?", (codigo,))
+        db.commit()
+
+def crear_apoyo(email, id):
+    with sqlite3.connect(archivo) as db:
+        cursor = db.cursor()
+        cursor.execute("INSERT INTO apoyos VALUES (?, ?)", (email, id))
+        db.commit()
+
+def conseguir_apoyos(id):
+    with sqlite3.connect(archivo) as db:
+        cursor = db.cursor()
+        res = cursor.execute("SELECT * FROM apoyos WHERE reporte = ?", (id,))
+        db.commit()
+        return res.fetchall()
+
+def eliminar_apoyo(email, id):
+    with sqlite3.connect(archivo) as db:
+        cursor = db.cursor()
+        cursor.execute("DELETE FROM apoyos WHERE reporte = ? AND email = ?", (id, email))
         db.commit()
