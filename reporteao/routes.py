@@ -51,7 +51,7 @@ def login():
         # TODO: Redireccionar a la página principal
         return "Sesión iniciada"
     # TODO(NecroBestia): Formulario de login
-    return render_template('templates/LogIn.html')
+    return render_template('templates/LogIn.html', title='Iniciar sesión')
 
 # Requiere un método POST con los siguientes parámetros:
 # - 'nombre': Nombre real de lx usuarix. Ejemplo: John Doe
@@ -87,7 +87,7 @@ def registrar():
         return "Se ha enviado un enlace de verificación a su correo institucional. Haga click en él para terminar de crear su cuenta."
     else:
         # TODO(NecroBestia): Agregar formulario de registro
-        return render_template('templates/SingUp.html')
+        return render_template('templates/SingUp.html', title='Registrarse')
 
 @bp.route('/add')
 def agregar_reporte():

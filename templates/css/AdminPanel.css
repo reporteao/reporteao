@@ -1,0 +1,43 @@
+.report-container {
+    max-width: 800px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.report-header,
+.report-content,
+.report-actions {
+    margin-bottom: 20px;
+}
+
+.report-actions button {
+    margin-right: 10px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: #a71d2a;
+}
+
+.archive-button {
+    background-color: #ffc107;
+    color: black;
+}
+
+.archive-button:hover {
+    background-color: #d39e00;
+}

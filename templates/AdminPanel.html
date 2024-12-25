@@ -1,0 +1,27 @@
+{%include 'menu.html'%}
+
+<link rel="stylesheet" href="{{url_for('templates', filename='css/AdminPanel.css')}}">
+<div class="report-container">
+    <h1>Reporte Detallado</h1>
+
+    <!-- Información del reporte -->
+    <div class="report-header">
+        <p><strong>Fecha del artículo:</strong> <span id="report-date">2023-12-24</span></p>
+        <p><strong>Título:</strong> <span id="report-title">Ejemplo de Título</span></p>
+        <p><strong>Subtítulo:</strong> <span id="report-subtitle">Ejemplo de Subtítulo</span></p>
+        <p><strong>Creado por:</strong> <span id="report-author">correo@example.com</span></p>
+    </div>
+
+    <!-- Contenido del reporte -->
+    <div class="report-content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel nisl at quam venenatis tincidunt.</p>
+        <img src="" alt="Imagen del reporte" style="max-width: 100%; height: auto;">
+    </div>
+
+    <!-- Acciones del reporte -->
+    <div class="report-actions">
+        <button class="delete-button" >Eliminar</button>
+        <button class="archive-button">Archivar</button>
+    </div>
+</div>
+
