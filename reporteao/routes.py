@@ -1,8 +1,9 @@
-from flask import Blueprint, request, session, render_template
+from flask import Blueprint, request, session, render_template, send_from_directory
 from argon2 import PasswordHasher
 from jinja2 import Environment, PackageLoader, select_autoescape, FileSystemLoader
 from .email import enviar_correo
 from . import db, config, util
+import pdb
 
 templateEnv = Environment(
     loader=PackageLoader('reporteao', '../templates/', encoding='utf-8'),
@@ -14,6 +15,11 @@ ph = PasswordHasher()
 
 bp.jinja_loader = FileSystemLoader('/workspaces/reporteao/templates/')
 
+@bp.route('/static/<path:filename>')
+def static_files(filename):
+    return send_from_directory(bp.static_folder, filename)
+
+# Rutas de la aplicación
 @bp.route('/')
 def inicio():
     reportes = db.listar_reportes(1)
@@ -50,10 +56,9 @@ def login():
         
         # Se inicia sesión
         session['usuario'] = email
-        # TODO: Redireccionar a la página principal
         return "Sesión iniciada"
-    # TODO: Formulario de login
-    return render_template('LogIn.html', title='Iniciar sesión')
+    else:
+        return render_template('LogIn.html')
 
 # Requiere un método POST con los siguientes parámetros:
 # - 'nombre': Nombre real de lx usuarix. Ejemplo: John Doe

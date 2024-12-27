@@ -13,3 +13,6 @@ secreto = conf['base']['secret']
 app = Flask(__name__)
 app.secret_key = secreto
 app.register_blueprint(bp)
+
+if __name__ == '__main__':
+    app.run()
