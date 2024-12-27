@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta name="Keyword" content="Aprendiendo html">
     <meta charset="utf-8">
-    <link rel="stylesheet" href="{{ url_for('templates', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
-
 <body>
     {% include 'menu.html' %}
     <div class="agrupar">
@@ -14,5 +12,4 @@
 
     </div>
 </body>
-
 </html>

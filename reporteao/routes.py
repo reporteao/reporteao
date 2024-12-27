@@ -1,29 +1,32 @@
 from flask import Blueprint, request, session, render_template
 from argon2 import PasswordHasher
-from jinja2 import Environment, PackageLoader, select_autoescape
+from jinja2 import Environment, PackageLoader, select_autoescape, FileSystemLoader
 from .email import enviar_correo
 from . import db, config, util
 
 templateEnv = Environment(
-    loader=PackageLoader('reporteao', '../templates'),
+    loader=PackageLoader('reporteao', '../templates/', encoding='utf-8'),
     autoescape=select_autoescape()
 )
 bp = Blueprint("routes", __name__)
 conf = config.cargar_configuracion('config.toml')
 ph = PasswordHasher()
 
+bp.jinja_loader = FileSystemLoader('/workspaces/reporteao/templates/')
+
+# Rutas de la aplicación
 @bp.route('/')
 def inicio():
     reportes = db.listar_reportes(1)
-    # TODO(NecroBestia): Agregar vista principal
-    return render_template('templates/index.html', reportes=reportes)
+    # TODO: Agregar vista principal
+    return render_template('index.html', reportes=reportes)
 
 
 # Requiere un método POST con los siguientes parámetros:
 # - 'email': Correo del usuario, sin @usach.cl. Ejemplo: john.doe
 # - 'clave': Contraseña del usuario
 # En caso de no ser una solicitud POST, debe retornar el formulario de login
-@bp.route('/login', methods = ['POST', 'GET'])
+@bp.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
         # NOTA: Al hacer el formulario, este campo debería señalar de que el @usach.cl ya está presente.
@@ -48,10 +51,9 @@ def login():
         
         # Se inicia sesión
         session['usuario'] = email
-        # TODO: Redireccionar a la página principal
         return "Sesión iniciada"
-    # TODO(NecroBestia): Formulario de login
-    return render_template('templates/LogIn.html', title='Iniciar sesión')
+    else:
+        return render_template('LogIn.html')
 
 # Requiere un método POST con los siguientes parámetros:
 # - 'nombre': Nombre real de lx usuarix. Ejemplo: John Doe
@@ -59,12 +61,12 @@ def login():
 # - 'clave': Contraseña de lx usuarix
 # - 'clave2': Contraseña de lx usuarix, repetida
 # En caso de no ser una solicitud POST, debe retornar el formulario de registro
-@bp.route('/register', methods = ['POST', 'GET'])
-def registrar():
+@bp.route('/register', methods=['POST', 'GET'])
+def register():
     if request.method == 'POST':
         # Se consiguen los datos desde el formulario
         nombre = str(request.form['nombre'])
-        # TODO(otoayana): Validar si el correo está bien escrito
+        # TODO: Validar si el correo está bien escrito
         email = str(request.form['email']) + '@usach.cl'
         clave = ph.hash(str(request.form['clave']))
 
@@ -86,8 +88,8 @@ def registrar():
 
         return "Se ha enviado un enlace de verificación a su correo institucional. Haga click en él para terminar de crear su cuenta."
     else:
-        # TODO(NecroBestia): Agregar formulario de registro
-        return render_template('templates/SingUp.html', title='Registrarse')
+        # TODO: Agregar formulario de registro
+        return render_template('SingUp.html', title='Registrarse')
 
 @bp.route('/add')
 def agregar_reporte():
@@ -95,8 +97,8 @@ def agregar_reporte():
 
 @bp.route('/like/<id>')
 def apoyar_reporte(id):
-    if session.has_key('usuario'):
-        apoyos = conseguir_apoyos(id)
+    if 'usuario' in session:
+        apoyos = db.conseguir_apoyos(id)
         existe = False
         i = 0
         while i < len(apoyos) or not existe:
@@ -112,7 +114,7 @@ def apoyar_reporte(id):
 
 @bp.route('/solve/<id>')
 def resolver_reporte(id):
-    if session.has_key('usuario'):
+    if 'usuario' in session:
         usuario = db.conseguir_usuario(session['usuario'])
         if usuario[3] > 1:
             db.actualizar_reporte(id, 1)
@@ -123,7 +125,7 @@ def resolver_reporte(id):
 
 @bp.route('/delete/<id>')
 def eliminar_reporte(id):
-    if session.has_key('usuario'):
+    if 'usuario' in session:
         usuario = db.conseguir_usuario(session['usuario'])
         reporte = db.conseguir_reporte(id)
         
@@ -147,6 +149,5 @@ def verificar(id):
         return "Usuario activado"
     
     if codigo[2] == 1:
-        # TODO(otoayana): Agregar sistema de reestablecimiento de claves
+        # TODO: Agregar sistema de reestablecimiento de claves
         return "TODO"
-

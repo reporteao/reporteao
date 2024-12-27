@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{ url_for('templates', filename='css/main.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}?v=1.0">
 <header class="header">
     <h1>ReportEAO</h1>
 </header>
@@ -16,8 +16,8 @@
         <li class="dropdown">
             <a href="#">Cuenta &#x25BC;</a>
             <ul>
-                <li><a href="{{url_for('/login')}}">Iniciar Sesión</a></li>
-                <li><a href="{{url_for('/register')}}">Registrarse</a></li>
+                <li><a href="{{url_for('routes.login')}}">Iniciar Sesión</a></li>
+                <li><a href="{{url_for('routes.register')}}">Registrarse</a></li>
                 <li><a href="logout">Cerrar Sesión</a></li>
             </ul>
         </li>
