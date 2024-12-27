@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{ url_for('templates', filename='css/LogIn-SingUp.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/LogIn-SingUp.css') }}">
 
 {%include 'menu.html'%}
 
@@ -26,6 +26,6 @@
     </section>
 
     <footer class="pie">
-        <p>¿Ya tienes cuenta? <a href="{{url_for('/login')}}">Inicia Sesión aquí</a>.</p>
+        <p>¿Ya tienes cuenta? <a href="{{url_for('routes.login')}}">Inicia Sesión aquí</a>.</p>
     </footer>
 </div>
