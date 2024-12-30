@@ -1,4 +1,4 @@
-from . import config
+from . import config, db
 from huey import SqliteHuey
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -26,3 +26,12 @@ def enviar_correo(destinatario, asunto, texto):
         servidor.login(username, clave)
         servidor.sendmail(direccion, destinatario, mensaje.as_string())
         servidor.quit()
+
+@cola.task()
+def expirar_codigo(id):
+    codigo = db.conseguir_codigo(id)
+    if codigo:
+        if codigo[2] == 0:
+            db.eliminar_usuario(codigo[0])
+        db.eliminar_codigo(codigo)
+

@@ -1,7 +1,7 @@
 from flask import Blueprint, request, session, render_template, redirect
 from argon2 import PasswordHasher
 from jinja2 import Environment, PackageLoader, select_autoescape, FileSystemLoader
-from .email import enviar_correo
+from .queue import enviar_correo, expirar_codigo
 from . import db, config, util
 
 templateEnv = Environment(
@@ -67,14 +67,13 @@ def register():
         # Se consiguen los datos desde el formulario
         nombre = str(request.form['nombre'])
         clave = ph.hash(str(request.form['clave']))
-        email = str(request.form['email']) + '@usach.cl'
 
         # Valida si el correo está bien escrito
-        for char in email:
+        for char in request.form['email']:
             if not ((char.isalpha() and char.islower()) or char == '.'):
                 return 'Correo no válido'
+        email = str(request.form['email']) + '@usach.cl'
         
-
         # Se invalida la solicitud si las contraseñas no son iguales
         if request.form['clave'] != request.form['clave2']:
             return "Contraseñas no coinciden"
@@ -90,6 +89,7 @@ def register():
         plantilla = templateEnv.get_template('email/verificacion.txt')
         correo = plantilla.render(uri=conf['web']['uri'], codigo=codigo)
         enviar_correo(email, 'Verifique su cuenta de ReportEAO', correo)
+        expirar_codigo.schedule(codigo, delay=1800)
 
         return "Se ha enviado un enlace de verificación a su correo institucional. Haga click en él para terminar de crear su cuenta."
     else:
