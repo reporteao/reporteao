@@ -8,11 +8,11 @@ templateEnv = Environment(
     loader=PackageLoader('reporteao', '../templates/', encoding='utf-8'),
     autoescape=select_autoescape()
 )
-bp = Blueprint("routes", __name__)
+bp = Blueprint("routes", __name__, static_folder='../static/')
 conf = config.cargar_configuracion('config.toml')
 ph = PasswordHasher()
 
-bp.jinja_loader = FileSystemLoader('/workspaces/reporteao/templates/')
+bp.jinja_loader = FileSystemLoader('./templates/')
 
 # Rutas de la aplicación
 @bp.route('/')
@@ -53,7 +53,7 @@ def login():
         session['usuario'] = email
         return "Sesión iniciada"
     else:
-        return render_template('LogIn.html')
+        return render_template('login.html')
 
 # Requiere un método POST con los siguientes parámetros:
 # - 'nombre': Nombre real de lx usuarix. Ejemplo: John Doe
@@ -89,7 +89,7 @@ def register():
         return "Se ha enviado un enlace de verificación a su correo institucional. Haga click en él para terminar de crear su cuenta."
     else:
         # TODO: Agregar formulario de registro
-        return render_template('SingUp.html', title='Registrarse')
+        return render_template('register.html', title='Registrarse')
 
 @bp.route('/add')
 def agregar_reporte():

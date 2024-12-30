@@ -10,7 +10,7 @@ conf = config.cargar_configuracion('config.toml')
 secreto = conf['base']['secret']
 
 # Configura la app
-app = Flask(__name__,static_folder='/workspaces/reporteao/static/css')
+app = Flask(__name__,static_folder='../static/css')
 app.secret_key = secreto
 app.register_blueprint(bp)
 
