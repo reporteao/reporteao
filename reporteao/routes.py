@@ -152,6 +152,7 @@ def verificar(id):
         usuario = db.actualizar_nivel(codigo[0], 0)
         return redirect('/', code=302)
     
+    # TODO: Agregar opciones para cambiar clave después de iniciar sesión
     if codigo[2] == 1:
-        # TODO: Agregar sistema de reestablecimiento de claves
-        return "TODO"
+        session['usuario'] = codigo[0]
+        return redirect('/', code=302)
