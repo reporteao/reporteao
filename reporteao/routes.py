@@ -94,7 +94,10 @@ def register():
         return "Se ha enviado un enlace de verificación a su correo institucional. Haga click en él para terminar de crear su cuenta."
     else:
         return render_template('register.html', title='Registrarse')
-
+@bp.route('/logout')
+def logout():
+    session.pop('usuario', None)
+    return redirect('/', code=302)
 @bp.route('/add', methods=['POST', 'GET'])
 def agregar_reporte():
     return render_template('crear.html')
