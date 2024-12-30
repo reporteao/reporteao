@@ -19,10 +19,10 @@ def init():
         cursor.execute("CREATE TABLE IF NOT EXISTS codigos(email, codigo, tipo)")
         db.commit()
 
-def agregar_reporte(autor, titulo, facultad, descripcion, imagenes):
+def agregar_reporte(autor, titulo, sala, descripcion, imagenes,fecha):
     with sqlite3.connect(archivo) as db:
         cursor = db.cursor()
-        cursor.execute("INSERT INTO reportes VALUES(?, ?, ?, ?, ?, ?, ?, ?)", (autor, titulo, facultad, descripcion, imagenes, 0, 0))
+        cursor.execute("INSERT INTO reportes (autor, titulo, sala, descripcion, imagen, fecha, likes, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (autor, titulo, sala, descripcion, imagenes, fecha, 0, 0))
         db.commit()
 
 def eliminar_reporte(id):

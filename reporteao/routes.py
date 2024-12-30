@@ -119,19 +119,26 @@ def logout():
 def agregar_reporte():
     if request.method == 'POST':
         autor = session['usuario']
-        titulo = request.form['report-title']
-        descripcion = request.form['report-room']
-        contenido = request.form['report-content']
         fecha = datetime.now().strftime('%Y-%m-%d %H:%M')
+        
+        titulo = request.form['report-title']
+        sala = request.form['report-room']
+        contenido = request.form['report-content']
+        
         imagen = request.files['report-image']
+        #TODO: Agregar validación de imagen
         if imagen:
             imagen.save(util.uuid())
+        else:
+            imagen = None
+    
+        db.agregar_reporte(autor, titulo, sala, contenido, fecha, imagen)
+        flash('Reporte creado')
+        return redirect('/', code=302)
 
 
     else:
         return render_template('crear.html')
-
-
 
 @bp.route('/like/<id>')
 def apoyar_reporte(id):
