@@ -97,7 +97,7 @@ def register():
 
 @bp.route('/add', methods=['POST', 'GET'])
 def agregar_reporte():
-    return "TODO"
+    return render_template('crear.html')
 
 @bp.route('/like/<id>')
 def apoyar_reporte(id):

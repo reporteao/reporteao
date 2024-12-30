@@ -13,7 +13,7 @@ archivo = conf['base']['database']
 def init():
     with sqlite3.connect(archivo) as db:
         cursor = db.cursor()
-        cursor.execute("CREATE TABLE IF NOT EXISTS reportes(id integer primary key autoincrement, autor, titulo, facultad, descripcion, imagenes, fecha, likes, estado)")
+        cursor.execute("CREATE TABLE IF NOT EXISTS reportes(id integer primary key autoincrement, autor, titulo, facultad, descripcion, imagen, fecha, likes, estado)")
         cursor.execute("CREATE TABLE IF NOT EXISTS apoyos(email, reporte)")
         cursor.execute("CREATE TABLE IF NOT EXISTS usuarios(email, nombre, clave, nivel)")
         cursor.execute("CREATE TABLE IF NOT EXISTS codigos(email, codigo, tipo)")

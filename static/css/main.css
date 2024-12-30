@@ -24,6 +24,12 @@ body {
     color: #333;
 }
 
+@media (min-width: 960px) {
+    body {
+        margin: 0 18vw !important;
+    }
+}
+
 /* Contenedor principal */
 .agrupar {
     max-width: 1200px;
