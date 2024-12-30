@@ -51,7 +51,7 @@ def login():
         
         # Se inicia sesión
         session['usuario'] = email
-        return "Sesión iniciada"
+        return redirect('/', code=302)
     else:
         return render_template('login.html')
 
