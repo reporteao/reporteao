@@ -18,7 +18,7 @@
             <a href="#">Cuenta &#x25BC;</a>
             <ul>
                 {%if session.get('usuario') %}
-                <li><a href="logout">Cerrar sesión</a></li>
+                <li><a href="{{url_for('routes.logout')}}">Cerrar sesión</a></li>
                 {%else%}
                 <li><a href="{{url_for('routes.login')}}">Iniciar sesión</a></li>
                 <li><a href="{{url_for('routes.register')}}">Registrarse</a></li>
