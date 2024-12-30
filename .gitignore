@@ -163,6 +163,8 @@ cython_debug/
 
 # SQLite databases
 *.db
+*.db-shm
+*.db-wal
 
 # Config file
 config.toml
