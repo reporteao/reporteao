@@ -3,24 +3,16 @@
 <div class="form-container">
     <h1>Crear un Nuevo Reporte</h1>
     <form action="/submit-report" method="POST" enctype="multipart/form-data">
-        <!-- Fecha del artículo -->
-        <label for="report-date">Fecha del artículo:</label>
-        <input type="date" id="report-date" name="report-date" required>
-
-        <!-- Título -->
         <label for="report-title">Título:</label>
         <input type="text" id="report-title" name="report-title" placeholder="Ingresa el título" required>
 
-        <!-- Subtítulo -->
-        <label for="report-subtitle">Subtítulo:</label>
-        <input type="text" id="report-subtitle" name="report-subtitle" placeholder="Ingresa el subtítulo">
+        <label for="report-subtitle">Sala:</label>
+        <input type="text" id="report-room" name="report-room" placeholder="Ingresa la sala">
 
-        <!-- Contenido principal -->
         <label for="report-content">Contenido:</label>
         <textarea id="report-content" name="report-content" rows="10" placeholder="Escribe el contenido del artículo"
             required></textarea>
 
-        <!-- Subir una foto -->
         <label for="report-image">Subir una foto:</label>
         <input type="file" id="report-image" name="report-image" accept="image/*" required>
 
