@@ -73,13 +73,17 @@ def register():
             if not ((char.isalpha() and char.islower()) or char == '.'):
                 return 'Correo no válido'
         email = str(request.form['email']) + '@usach.cl'
+        usuarioExistente = db.conseguir_usuario(email)
         
+        if usuarioExistente:
+            return "Usuario ya existe"
+
         # Se invalida la solicitud si las contraseñas no son iguales
         if request.form['clave'] != request.form['clave2']:
             return "Contraseñas no coinciden"
 
         # Se crea el usuario
-        db.crear_usuario(nombre, email, clave, -1)
+        db.crear_usuario(email, nombre, clave, -1)
 
         # Se crea el código de verificación
         codigo = util.uuid()
@@ -89,15 +93,17 @@ def register():
         plantilla = templateEnv.get_template('email/verificacion.txt')
         correo = plantilla.render(uri=conf['web']['uri'], codigo=codigo)
         enviar_correo(email, 'Verifique su cuenta de ReportEAO', correo)
-        expirar_codigo.schedule(codigo, delay=1800)
+        expirar_codigo.schedule((codigo,), delay=1800)
 
         return "Se ha enviado un enlace de verificación a su correo institucional. Haga click en él para terminar de crear su cuenta."
     else:
         return render_template('register.html', title='Registrarse')
+
 @bp.route('/logout')
 def logout():
     session.pop('usuario', None)
     return redirect('/', code=302)
+
 @bp.route('/add', methods=['POST', 'GET'])
 def agregar_reporte():
     return render_template('crear.html')
@@ -153,9 +159,10 @@ def verificar(id):
     
     if codigo[2] == 0:
         usuario = db.actualizar_nivel(codigo[0], 0)
-        return redirect('/', code=302)
     
     # TODO: Agregar opciones para cambiar clave después de iniciar sesión
     if codigo[2] == 1:
         session['usuario'] = codigo[0]
-        return redirect('/', code=302)
+
+    db.eliminar_codigo(id)
+    return redirect('/', code=302)

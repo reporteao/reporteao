@@ -52,10 +52,10 @@ def conseguir_reporte(id):
         db.commit()
         return res.fetchone()
 
-def crear_usuario(nombre, email, clave, nivel):
+def crear_usuario(email, nombre, clave, nivel):
     with sqlite3.connect(archivo) as db:
         cursor = db.cursor()
-        res = cursor.execute("INSERT INTO usuarios VALUES (?, ?, ?, ?)", (nombre, email, clave, nivel))
+        res = cursor.execute("INSERT INTO usuarios VALUES (?, ?, ?, ?)", (email, nombre, clave, nivel))
         db.commit()
 
 def conseguir_usuario(email):
