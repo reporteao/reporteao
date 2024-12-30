@@ -4,8 +4,6 @@ from jinja2 import Environment, PackageLoader, select_autoescape, FileSystemLoad
 from .queue import enviar_correo, expirar_codigo
 from . import db, config, util
 from datetime import datetime
-from werkzeug.utils import secure_filename
-
 
 templateEnv = Environment(
     loader=PackageLoader('reporteao', '../templates/', encoding='utf-8'),
@@ -114,10 +112,12 @@ def agregar_reporte():
         titulo = request.form['report-title']
         descripcion = request.form['report-room']
         contenido = request.form['report-content']
-        fecha = datetime.now().strftime('%Y-%m-%d')
+
+        fecha = datetime.now().strftime('%Y-%m-%d %H:%M')
         imagen = request.files['report-image']
+
         if imagen:
-            imagen.save(secure_filename(imagen.filename))
+            imagen.save(util.uuid())
     else:
         return render_template('crear.html')
 
