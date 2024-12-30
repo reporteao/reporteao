@@ -1,8 +1,11 @@
-from flask import Blueprint, request, session, render_template, redirect
+from flask import Blueprint, request, session, render_template, redirect, flash
 from argon2 import PasswordHasher
 from jinja2 import Environment, PackageLoader, select_autoescape, FileSystemLoader
 from .queue import enviar_correo, expirar_codigo
 from . import db, config, util
+from datetime import datetime
+from werkzeug.utils import secure_filename
+
 
 templateEnv = Environment(
     loader=PackageLoader('reporteao', '../templates/', encoding='utf-8'),
@@ -76,7 +79,7 @@ def register():
         
         # Se invalida la solicitud si las contraseñas no son iguales
         if request.form['clave'] != request.form['clave2']:
-            return "Contraseñas no coinciden"
+            return render_template('register.html', title='Registrarse')
 
         # Se crea el usuario
         db.crear_usuario(nombre, email, clave, -1)
@@ -98,9 +101,20 @@ def register():
 def logout():
     session.pop('usuario', None)
     return redirect('/', code=302)
+
 @bp.route('/add', methods=['POST', 'GET'])
 def agregar_reporte():
-    return render_template('crear.html')
+    if request.method == 'POST':
+        autor = session['usuario']
+        titulo = request.form['report-title']
+        descripcion = request.form['report-room']
+        contenido = request.form['report-content']
+        fecha = datetime.now().strftime('%Y-%m-%d')
+        imagen = request.files['report-image']
+        if imagen:
+            imagen.save(secure_filename(imagen.filename))
+    else:
+        return render_template('crear.html')
 
 @bp.route('/like/<id>')
 def apoyar_reporte(id):
