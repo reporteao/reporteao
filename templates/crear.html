@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='CrearReporte.css') }}?v=1.0">
 {% include 'menu.html' %}
 <div class="form-container">
-    <h1>Crear un Nuevo Reporte</h1>
+    <h1>Nuevo reporte</h1>
     <form action="/submit-report" method="POST" enctype="multipart/form-data">
         <label for="report-title">Título:</label>
         <input type="text" id="report-title" name="report-title" placeholder="Ingresa el título" required>
@@ -9,13 +9,13 @@
         <label for="report-subtitle">Sala:</label>
         <input type="text" id="report-room" name="report-room" placeholder="Ingresa la sala">
 
-        <label for="report-content">Contenido:</label>
-        <textarea id="report-content" name="report-content" rows="10" placeholder="Escribe el contenido del artículo"
+        <label for="report-content">Descripción:</label>
+        <textarea id="report-content" name="report-content" rows="10" placeholder="Escribe la descripción del reporte"
             required></textarea>
 
         <label for="report-image">Subir una foto:</label>
         <input type="file" id="report-image" name="report-image" accept="image/*" required>
 
-        <button type="submit">Crear Reporte</button>
+        <button type="submit">Crear reporte</button>
     </form>
 </div>
