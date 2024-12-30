@@ -4,6 +4,8 @@ from jinja2 import Environment, PackageLoader, select_autoescape, FileSystemLoad
 from .queue import enviar_correo, expirar_codigo
 from . import db, config, util
 from datetime import datetime
+from werkzeug.utils import secure_filename
+
 
 templateEnv = Environment(
     loader=PackageLoader('reporteao', '../templates/', encoding='utf-8'),
@@ -38,20 +40,24 @@ def login():
 
         # Se verifica si existe el usuario
         if not usuario:
-            return "Usuario no existe"
+            flash('Usuario no existe')
+            return redirect('/login', code=302)
 
         # Se verifica si el usuario ya fue verificado o no
         if usuario[3] < 0:
-            return "Usuario no está habilitado para iniciar sesión"
+            flash('Usuario no está habilitado para iniciar sesión')
+            return redirect('/login', code=302)
             
         # Se verifica si la contraseña es válida
         try:
             ph.verify(usuario[2], str(request.form['clave']))
         except argon2.exceptions.VerifyMismatchError:
-            return "Contraseña inválida"
+            flash('Contraseña inválida')
+            return redirect('/login', code=302)
         
         # Se inicia sesión
         session['usuario'] = email
+        flash('Sesión iniciada')
         return redirect('/', code=302)
     else:
         return render_template('login.html')
@@ -72,16 +78,19 @@ def register():
         # Valida si el correo está bien escrito
         for char in request.form['email']:
             if not ((char.isalpha() and char.islower()) or char == '.'):
-                return 'Correo no válido'
+                flash('Correo no válido')
+                return redirect('/register', code=302)
         email = str(request.form['email']) + '@usach.cl'
         usuarioExistente = db.conseguir_usuario(email)
         
         if usuarioExistente:
-            return "Usuario ya existe"
+            flash('Usuario ya existe')
+            return redirect('/register', code=302)
 
         # Se invalida la solicitud si las contraseñas no son iguales
         if request.form['clave'] != request.form['clave2']:
-            return render_template('register.html', title='Registrarse')
+            flash('Las contraseñas no coinciden')
+            return redirect('/register', code=302)
 
         # Se crea el usuario
         db.crear_usuario(email, nombre, clave, -1)
@@ -95,14 +104,15 @@ def register():
         correo = plantilla.render(uri=conf['web']['uri'], codigo=codigo)
         enviar_correo(email, 'Verifique su cuenta de ReportEAO', correo)
         expirar_codigo.schedule((codigo,), delay=1800)
-
-        return "Se ha enviado un enlace de verificación a su correo institucional. Haga click en él para terminar de crear su cuenta."
+        flash('Se ha enviado un enlace de verificación a su correo institucional. Haga click en él para terminar de crear su cuenta.')
+        return redirect('/login', code=301)
     else:
         return render_template('register.html', title='Registrarse')
 
 @bp.route('/logout')
 def logout():
     session.pop('usuario', None)
+    flash('Sesión cerrada')
     return redirect('/', code=302)
 
 @bp.route('/add', methods=['POST', 'GET'])
@@ -112,14 +122,16 @@ def agregar_reporte():
         titulo = request.form['report-title']
         descripcion = request.form['report-room']
         contenido = request.form['report-content']
-
         fecha = datetime.now().strftime('%Y-%m-%d %H:%M')
         imagen = request.files['report-image']
-
         if imagen:
             imagen.save(util.uuid())
+
+
     else:
         return render_template('crear.html')
+
+
 
 @bp.route('/like/<id>')
 def apoyar_reporte(id):

@@ -6,6 +6,13 @@
         <h1>Iniciar Sesión</h1>
     </header>
     <section class="section">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <script type="text/javascript">
+            alert("{{ messages[0] }}");
+        </script>
+        {% endif %}
+        {% endwith %}
         <form action="/login" method="POST">
             <label for="email">Correo Electrónico (sin @usach.cl):</label>
             <input type="text" id="email" name="email" placeholder="@usach.cl" required>

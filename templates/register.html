@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='LogIn-SingUp.css') }}?v=1.0">
+<link rel="stylesheet" href="{{ url_for('static', filename='LogIn-SignUp.css') }}?v=1.0">
 
 {%include 'menu.html'%}
 
@@ -8,6 +8,13 @@
     </header>
 
     <section class="section">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <script type="text/javascript">
+            alert("{{ messages[0] }}");
+        </script>
+        {% endif %}
+        {% endwith %}
         <form action="/register" method="POST">
             <label for="nombre">Nombre Completo:</label>
             <input type="text" id="nombre" name="nombre" placeholder="" required>

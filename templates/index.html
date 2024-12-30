@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta name="Keyword" content="Aprendiendo html">
     <meta charset="utf-8">
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
+
 <body>
     {% include 'menu.html' %}
     <div class="agrupar">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <script type="text/javascript">
+            alert("{{ messages[0] }}");
+        </script>
+        {% endif %}
+        {% endwith %}
         {%include 'articulo.html'%}
 
     </div>
 </body>
+
 </html>
