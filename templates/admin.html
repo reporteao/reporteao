@@ -1,27 +1,45 @@
-{%include 'menu.html'%}
+{% include 'menu.html' %}
 
-<link rel="stylesheet" href="{{url_for('static', filename='AdminPanel.css')}}?v=1.0">
+<link rel="stylesheet" href="{{ url_for('static', filename='AdminPanel.css') }}?v=1.0">
 <div class="report-container">
-    <h1>Reporte Detallado</h1>
+    <h1>Panel de Administración</h1>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <script type="text/javascript">
+        alert("{{ messages[0] }}");
+    </script>
+    {% endif %}
+    {% endwith %}
+    {% for reporte in reportes %}
+    <div class="report">
+        <!-- Información del reporte -->
+        <div class="report-header">
+            <p><strong>Fecha del artículo:</strong> <span id="report-date">{{ reporte[6] }}</span></p>
+            <p><strong>Título:</strong> <span id="report-title">{{ reporte[2] }}</span></p>
+            <p><strong>Subtítulo:</strong> <span id="report-subtitle">{{ reporte[3] }}</span></p>
+            <p><strong>Creado por:</strong> <span id="report-author">{{ reporte[1] }}</span></p>
+            <p><strong>Estado:</strong> <span id="report-status">
+                {% if reporte[8] == 0 %}
+                    No resuelto
+                {% else %}
+                    Resuelto
+                {% endif %}
+            </span></p>
+        </div>
 
-    <!-- Información del reporte -->
-    <div class="report-header">
-        <p><strong>Fecha del artículo:</strong> <span id="report-date">2023-12-24</span></p>
-        <p><strong>Título:</strong> <span id="report-title">Ejemplo de Título</span></p>
-        <p><strong>Subtítulo:</strong> <span id="report-subtitle">Ejemplo de Subtítulo</span></p>
-        <p><strong>Creado por:</strong> <span id="report-author">correo@example.com</span></p>
-    </div>
+        <!-- Contenido del reporte -->
+        <div class="report-content">
+            <p>{{ reporte[4] }}</p>
+            {% if reporte[5] %}
+            <img src="{{ url_for('static', filename='uploads/' ~ reporte[5]) }}" alt="Imagen del reporte" style="max-width: 100%; height: auto;">
+            {% endif %}
+        </div>
 
-    <!-- Contenido del reporte -->
-    <div class="report-content">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel nisl at quam venenatis tincidunt.</p>
-        <img src="" alt="Imagen del reporte" style="max-width: 100%; height: auto;">
+        <!-- Acciones del reporte -->
+        <div class="report-actions">
+            <a href="{{url_for('routes.eliminar_reporte', id=reporte[0])}}"><button class="delete-button">Eliminar</button></a>
+            <a href="{{url_for('routes.resolver_reporte', id=reporte[0])}}"><button class="archive-button">Resolver</button></a>
+        </div>
     </div>
-
-    <!-- Acciones del reporte -->
-    <div class="report-actions">
-        <button class="delete-button" >Eliminar</button>
-        <button class="archive-button">Archivar</button>
-    </div>
+    {% endfor %}
 </div>
-

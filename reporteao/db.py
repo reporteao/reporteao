@@ -19,6 +19,8 @@ def init():
         cursor.execute("CREATE TABLE IF NOT EXISTS codigos(email, codigo, tipo)")
         db.commit()
 
+#agregar_reporte(estado): 0 no resuelto
+#agregar_reporte(estado): 1    resuelto
 def agregar_reporte(autor, titulo, sala, descripcion, imagenes,fecha):
     with sqlite3.connect(archivo) as db:
         cursor = db.cursor()
@@ -44,6 +46,12 @@ def listar_reportes(ubicacion):
         res = cursor.execute("SELECT * FROM reportes ORDER BY id DESC LIMIT ?, ?", (ubicacion, fin))
         db.commit()
         return res.fetchall()
+def listar_reportes_por_usuario(email):
+    with sqlite3.connect(archivo) as db:
+        cursor = db.cursor()
+        res = cursor.execute("SELECT * FROM reportes WHERE autor = ? ORDER BY id DESC", (email,))
+        db.commit()
+        return res.fetchall()
 
 def conseguir_reporte(id):
     with sqlite3.connect(archivo) as db:
@@ -65,7 +73,7 @@ def conseguir_usuario(email):
         db.commit()
         return res.fetchone()
 
-def actualizar_nivel(email, nivel):
+def actualizar_nivel(nivel,email):
     with sqlite3.connect(archivo) as db:
         cursor = db.cursor()
         res = cursor.execute("UPDATE usuarios SET nivel = ? WHERE email = ?", (nivel, email))

@@ -21,10 +21,14 @@ bp.jinja_loader = FileSystemLoader('./templates/')
 @bp.route('/')
 def inicio():
     reportes = db.listar_reportes(0)
-    # TODO: Agregar vista principal
-    return render_template('index.html', reportes=reportes)
+    usuario = None
+    if 'usuario' in session:
+        usuario = db.conseguir_usuario(session['usuario'])
+    
+    return render_template('index.html', reportes=reportes,usuario=usuario)
 
 
+################################## Sesion ##################################
 # Requiere un método POST con los siguientes parámetros:
 # - 'email': Correo del usuario, sin @usach.cl. Ejemplo: john.doe
 # - 'clave': Contraseña del usuario
@@ -114,7 +118,7 @@ def logout():
     session.pop('usuario', None)
     flash('Sesión cerrada')
     return redirect('/', code=302)
-
+################################## Reportes ##################################
 @bp.route('/add', methods=['POST', 'GET'])
 def agregar_reporte():
     if request.method == 'POST':
@@ -166,6 +170,8 @@ def resolver_reporte(id):
         usuario = db.conseguir_usuario(session['usuario'])
         if usuario[3] > 1:
             db.actualizar_reporte(id, 1)
+            flash('Reporte resuelto')
+            return redirect('Adminitracion_reportes', code=302)
         else:
             return "No estás autorizadx para realizar esta operación"
     else:
@@ -178,13 +184,16 @@ def eliminar_reporte(id):
         reporte = db.conseguir_reporte(id)
         
         # Eliminar el reporte si lx usuarix es dueñx
-        if usuario[3] > 2 or reporte[1] == usuario[0]:
+        if usuario[3] >= 2 or reporte[1] == usuario[0]:
             db.eliminar_reporte(id)
+            flash('Reporte eliminado')
+            return redirect('/Adminitracion_reportes', code=302)
         else:
             return "No estás autorizadx para realizar esta operación"
     else:
         return "Sesión no iniciada"
 
+#Validacion de cuenta
 @bp.route('/verify/<id>')
 def verificar(id):
     codigo = db.conseguir_codigo(id)
@@ -201,3 +210,31 @@ def verificar(id):
 
     db.eliminar_codigo(id)
     return redirect('/', code=302)
+
+
+
+################################## Cambiar nivel usuario ##################################
+@bp.route('/update_nivel/<email>/<int:nivel>', methods=['GET'])
+def actualizar_nivel(nivel,email):
+        usuario = db.conseguir_usuario(email)        
+        db.actualizar_nivel(nivel,email)
+        return redirect('/', code=302)
+
+
+##################################    Admin Panel        ##################################
+@bp.route('/Adminitracion_reportes', methods=['GET' , 'POST'])
+def admin_reportes():
+    reportes=db.listar_reportes(0)
+    usuario = db.conseguir_usuario(session['usuario'])
+    if usuario[3] >= 2: 
+        #nivel 2 o mas es el nivel de administrador
+        reportes = db.listar_reportes(0)
+    
+    elif usuario[3] == 1:
+        # Fetch only the reports created by the user for users with level 1
+        reportes = db.listar_reportes_por_usuario(usuario[0])
+    else:
+        flash('No tienes permisos para acceder a esta página')
+        return redirect('/', code=302)
+                        
+    return render_template('admin.html', reportes=reportes)

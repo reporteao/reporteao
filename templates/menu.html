@@ -10,7 +10,13 @@
             <a href="#">Reporte &#x25BC;</a>
             <ul>
                 <li><a href="{{url_for('routes.agregar_reporte')}}">Crear reporte</a></li>
-                <li><a href="/reports/view">Mis reportes</a></li>
+                {% if usuario %}
+                {% if usuario[3] == 1 %}
+                <li><a href="{{url_for('routes.admin_reportes')}}">Mis reportes</a></li>
+                {% else %}
+                <li><a href="{{url_for('routes.admin_reportes')}}">Admin Panel</a></li>
+                {% endif %}
+                {% endif %}
             </ul>
         </li>
         {%endif%}

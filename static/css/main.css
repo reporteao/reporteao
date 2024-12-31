@@ -35,11 +35,12 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    margin-top: 20px;
     background: #fff;
     border: 1px solid #ccc;
+    border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
 /* Header */
 .header {
     text-align: center;
@@ -141,7 +142,7 @@ body {
 
 .article time {
 	font-size: 0.9em;
-	color: #888;
+	color: #626262;
 }
 
 .article h1,
