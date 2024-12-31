@@ -48,9 +48,9 @@ def login():
             return redirect('/login', code=302)
 
         # Se verifica si el usuario ya fue verificado o no
-        '''if usuario[3] < 0:
+        if usuario[3] < 0:
             flash('Usuario no está habilitado para iniciar sesión')
-            return redirect('/login', code=302)'''
+            return redirect('/login', code=302)
             
         # Se verifica si la contraseña es válida
         try:
