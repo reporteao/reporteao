@@ -20,7 +20,7 @@ bp.jinja_loader = FileSystemLoader('./templates/')
 # Rutas de la aplicación
 @bp.route('/')
 def inicio():
-    reportes = db.listar_reportes(1)
+    reportes = db.listar_reportes(0)
     # TODO: Agregar vista principal
     return render_template('index.html', reportes=reportes)
 
@@ -44,9 +44,9 @@ def login():
             return redirect('/login', code=302)
 
         # Se verifica si el usuario ya fue verificado o no
-        if usuario[3] < 0:
+        '''if usuario[3] < 0:
             flash('Usuario no está habilitado para iniciar sesión')
-            return redirect('/login', code=302)
+            return redirect('/login', code=302)'''
             
         # Se verifica si la contraseña es válida
         try:
@@ -132,7 +132,7 @@ def agregar_reporte():
         else:
             imagen = None
     
-        db.agregar_reporte(autor, titulo, sala, contenido, fecha, imagen)
+        db.agregar_reporte(autor, titulo, sala, contenido, imagen, fecha)
         flash('Reporte creado')
         return redirect('/', code=302)
 

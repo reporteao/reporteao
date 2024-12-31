@@ -41,7 +41,7 @@ def listar_reportes(ubicacion):
     with sqlite3.connect(archivo) as db:
         cursor = db.cursor()
         fin = ubicacion + 20
-        res = cursor.execute("SELECT * FROM reportes LIMIT ?, ?", (ubicacion, fin))
+        res = cursor.execute("SELECT * FROM reportes ORDER BY id DESC LIMIT ?, ?", (ubicacion, fin))
         db.commit()
         return res.fetchall()
 
