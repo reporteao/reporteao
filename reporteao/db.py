@@ -110,6 +110,7 @@ def crear_apoyo(email, id):
     with sqlite3.connect(archivo) as db:
         cursor = db.cursor()
         cursor.execute("INSERT INTO apoyos VALUES (?, ?)", (email, id))
+        cursor.execute("UPDATE reportes SET likes = likes + 1 WHERE id = ?", (id,))
         db.commit()
 
 def conseguir_apoyos(id):
@@ -123,4 +124,6 @@ def eliminar_apoyo(email, id):
     with sqlite3.connect(archivo) as db:
         cursor = db.cursor()
         cursor.execute("DELETE FROM apoyos WHERE reporte = ? AND email = ?", (id, email))
+        cursor.execute("UPDATE reportes SET likes = likes - 1 WHERE id = ?", (id,))
+
         db.commit()

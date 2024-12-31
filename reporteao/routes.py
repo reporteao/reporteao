@@ -145,17 +145,20 @@ def apoyar_reporte(id):
     if 'usuario' in session:
         apoyos = db.conseguir_apoyos(id)
         existe = False
-        i = 0
-        while i < len(apoyos) or not existe:
-            if apoyos[i][0] == session['usuario']:
+        for apo in apoyos:
+            if apo[0] == session['usuario']:
                 existe = True
-                
+                break
+
         if not existe:
             db.crear_apoyo(session['usuario'], id)
         else:
             db.eliminar_apoyo(session['usuario'], id)
+
+        return redirect('/', code=302)
     else:
-        return "Sesión no iniciada"
+        flash('Sesión no iniciada')
+        return redirect('/login', code=302)
 
 @bp.route('/solve/<id>')
 def resolver_reporte(id):
