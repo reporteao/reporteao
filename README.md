@@ -25,7 +25,7 @@ Finalmente, ejecute el servidor web y la cola con los siguientes comandos.
 
 ```
 $ poetry run flask --app reporteao run &
-$ poetry run huey_consumer.py reporteao.email.cola
+$ poetry run huey_consumer.py reporteao.queue.cola
 ```
 
 ### Nix
@@ -47,7 +47,7 @@ Finalmente, ejecute el servidor web y la cola con los siguientes comandos.
 
 ```
 $ flask --app reporteao run &
-$ huey_consumer.py reporteao.email.cola
+$ huey_consumer.py reporteao.queue.cola
 ```
 
 ## Licencia
